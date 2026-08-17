@@ -1,0 +1,4 @@
+interface:
+  display_name: "Initialize Repository Context"
+  short_description: "扫描仓库并生成可靠、低 Token 的 AI 编码上下文"
+  default_prompt: "使用 $initialize-repository-context 初始化当前仓库的 AI 编码上下文。"

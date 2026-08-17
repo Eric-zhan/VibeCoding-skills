@@ -1,0 +1,4 @@
+interface:
+  display_name: "Codex 周工作总结"
+  short_description: "汇总指定日期范围内的 Codex 会话，生成清晰、可核查的结构化工作报告"
+  default_prompt: "Use $summarize-codex-week to summarize my Codex work from last week."
