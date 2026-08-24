@@ -9,6 +9,7 @@
 | --- | --- |
 | `initialize-repository-context` | 初始化、修复或审计仓库的 `AGENTS.md`、代码地图、测试说明和语言规范。 |
 | `summarize-codex-week` | 按时间范围汇总本地 Codex 会话中有证据支持的工作。 |
+| `structure-technical-documents` | 按知识逻辑整理论文笔记、代码流程、持续记录和通用技术文档。 |
 
 第三方组件记录在 [`third-party.lock.yaml`](third-party.lock.yaml) 中，不会复制到本仓库。
 
@@ -22,7 +23,7 @@
 ./bootstrap.sh status
 ```
 
-`install` 只会把本仓库的两份 Skill 链接到 `${HOME}/.agents/skills/`。它具有以下安全边界：
+`install` 只会把本仓库的三份 Skill 链接到 `${HOME}/.agents/skills/`。它具有以下安全边界：
 
 - 不安装或升级第三方组件；
 - 不联网；
@@ -44,6 +45,7 @@ AGENTS_SKILLS_HOME=/path/to/skills ./bootstrap.sh install
 ```text
 使用 initialize-repository-context 初始化 /path/to/project 的 AI 编码上下文。
 使用 summarize-codex-week 总结我本周的 Codex 工作。
+使用 structure-technical-documents 整理这份论文、代码流程或持续工作记录，并先说明选择的文档类型。
 ```
 
 支持 Skill 选择器的客户端也可以从选择器中选择对应名称。不同客户端的 `@`、`$`
@@ -68,7 +70,8 @@ git pull --ff-only
 .
 ├── skills/
 │   ├── initialize-repository-context/
-│   └── summarize-codex-week/
+│   ├── summarize-codex-week/
+│   └── structure-technical-documents/
 ├── bootstrap.sh
 ├── third-party.lock.yaml
 └── README.md

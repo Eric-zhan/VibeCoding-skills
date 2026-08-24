@@ -8,6 +8,7 @@ readonly CODEX_ROOT="${CODEX_HOME:-${HOME}/.codex}"
 readonly -a OWNED_SKILLS=(
   "initialize-repository-context"
   "summarize-codex-week"
+  "structure-technical-documents"
 )
 
 usage() {

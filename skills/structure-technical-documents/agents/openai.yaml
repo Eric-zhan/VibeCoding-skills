@@ -1,0 +1,4 @@
+interface:
+  display_name: "结构化技术文档"
+  short_description: "按知识逻辑整理论文、代码流程和持续记录"
+  default_prompt: "使用 $structure-technical-documents 整理这份技术文档，并先说明你选择的文档类型和整理方式。"
