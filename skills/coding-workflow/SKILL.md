@@ -47,6 +47,19 @@ Ask separately before destructive operations, dependency installation, Git
 state changes, pushes, merges, publishing, or other actions outside the local
 edit.
 
+## Language
+
+Write generated documents in Chinese by default and treat this as a hard
+requirement for plans, designs, specifications, review notes, summaries, and
+other process documents.
+
+- Use Chinese for document titles, headings, explanations, checklists, and
+  prose.
+- Preserve code, commands, paths, identifiers, API names, and original error
+  messages exactly when they need to remain executable or searchable.
+- Follow another language only when the user explicitly requests it for that
+  document.
+
 ## Debugging
 
 When facing a bug, test failure, build failure, performance regression,
