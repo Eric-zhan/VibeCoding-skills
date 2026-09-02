@@ -3,7 +3,9 @@ set -euo pipefail
 
 readonly REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 readonly SKILLS_ROOT="${REPO_ROOT}/skills"
-readonly INSTALL_ROOT="${AGENTS_SKILLS_HOME:-${HOME}/.agents/skills}"
+readonly DEFAULT_INSTALL_ROOT="${HOME}/.agents/skills"
+readonly INSTALL_STATE_DIR="${REPO_ROOT}/.vibecoding-skills"
+readonly INSTALL_STATE_FILE="${INSTALL_STATE_DIR}/install-root"
 readonly CODEX_ROOT="${CODEX_HOME:-${HOME}/.codex}"
 readonly -a OWNED_SKILLS=(
   "coding-workflow"
@@ -11,6 +13,24 @@ readonly -a OWNED_SKILLS=(
   "summarize-codex-week"
   "structure-technical-documents"
 )
+
+read_recorded_install_root() {
+  local path
+
+  [[ -f "${INSTALL_STATE_FILE}" ]] || return 1
+  path="$(sed -n '1p' "${INSTALL_STATE_FILE}")" || return 1
+  [[ "${path}" == /* ]] || return 1
+  printf '%s' "${path}"
+}
+
+if [[ -n "${AGENTS_SKILLS_HOME:-}" ]]; then
+  INSTALL_ROOT="${AGENTS_SKILLS_HOME}"
+elif INSTALL_ROOT="$(read_recorded_install_root)"; then
+  :
+else
+  INSTALL_ROOT="${DEFAULT_INSTALL_ROOT}"
+fi
+readonly INSTALL_ROOT
 
 usage() {
   printf 'Usage: %s {check|install|status}\n' "${0##*/}"
@@ -138,6 +158,11 @@ prune_stale_owned_links() {
   done < <(find -P "${INSTALL_ROOT}" -mindepth 1 -maxdepth 1 -type l -print0)
 }
 
+remember_install_root() {
+  mkdir -p -- "${INSTALL_STATE_DIR}"
+  printf '%s\n' "${INSTALL_ROOT}" > "${INSTALL_STATE_FILE}"
+}
+
 install_owned_skills() {
   local name
   local source
@@ -184,6 +209,9 @@ install_owned_skills() {
     ln -s -- "${source}" "${target}"
     printf 'LINK   %-37s %s\n' "${name}" "${target}"
   done
+
+  remember_install_root
+  printf 'SAVE   %-37s %s\n' "install root" "${INSTALL_STATE_FILE}"
 }
 
 main() {

@@ -29,7 +29,7 @@ Skill/Plugin 源码快照；不会保存 Codex 配置、会话记录、凭据或
 ./bootstrap.sh status
 ```
 
-`install` 只会把本仓库的四份 Skill 链接到 `${HOME}/.agents/skills/`。它具有以下安全边界：
+`install` 只会把本仓库的四份 Skill 链接到当前安装根目录（默认是 `${HOME}/.agents/skills/`）。它具有以下安全边界：
 
 - 不安装或升级第三方组件；
 - 不联网；
@@ -42,6 +42,11 @@ Skill/Plugin 源码快照；不会保存 Codex 配置、会话记录、凭据或
 ```bash
 AGENTS_SKILLS_HOME=/path/to/skills ./bootstrap.sh install
 ```
+
+安装路径会记录在项目内的 `.vibecoding-skills/install-root`，该目录已加入 `.gitignore`，
+不会提交到 Git。路径选择顺序为：本次命令的 `AGENTS_SKILLS_HOME`、上次记录的路径、默认的
+`${HOME}/.agents/skills`。换机器后状态文件通常不存在，会回到默认路径；需要时重新设置
+`AGENTS_SKILLS_HOME` 即可。
 
 安装后重启 Codex，使其重新发现 Skill。
 
