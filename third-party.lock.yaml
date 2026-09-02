@@ -2,12 +2,13 @@ schema_version: 1
 components:
   - name: superpowers
     kind: codex-plugin
-    version: 6.2.0
+    version: 6.3.0
     distribution: openai-curated-remote
     source: https://github.com/obra/superpowers
     license: MIT
-    vendored: false
-    install_policy: managed-separately
+    vendored: true
+    path: third-party/superpowers/6.3.0
+    install_policy: vendored-reference
   - name: plugin-management
     kind: codex-plugin
     version: 0.1.0

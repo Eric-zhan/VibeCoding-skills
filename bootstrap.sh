@@ -6,6 +6,7 @@ readonly SKILLS_ROOT="${REPO_ROOT}/skills"
 readonly INSTALL_ROOT="${AGENTS_SKILLS_HOME:-${HOME}/.agents/skills}"
 readonly CODEX_ROOT="${CODEX_HOME:-${HOME}/.codex}"
 readonly -a OWNED_SKILLS=(
+  "coding-workflow"
   "initialize-repository-context"
   "summarize-codex-week"
   "structure-technical-documents"
@@ -117,10 +118,32 @@ check_repository() {
   return "${failed}"
 }
 
+prune_stale_owned_links() {
+  local target
+  local raw_target
+  local skill_name
+
+  [[ -d "${INSTALL_ROOT}" ]] || return 0
+
+  while IFS= read -r -d '' target; do
+    raw_target="$(readlink "${target}")" || continue
+    [[ "${raw_target}" == "${SKILLS_ROOT}/"* ]] || continue
+
+    skill_name="${raw_target#${SKILLS_ROOT}/}"
+    [[ "${skill_name}" != */* ]] || continue
+    [[ -f "${SKILLS_ROOT}/${skill_name}/SKILL.md" ]] && continue
+
+    unlink -- "${target}"
+    printf 'REMOVE %-36s %s\n' "${skill_name}" "${target}"
+  done < <(find -P "${INSTALL_ROOT}" -mindepth 1 -maxdepth 1 -type l -print0)
+}
+
 install_owned_skills() {
   local name
   local source
   local target
+
+  prune_stale_owned_links
 
   for name in "${OWNED_SKILLS[@]}"; do
     source_is_valid "${name}"
